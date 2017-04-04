@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+var program = require('commander');
+var crypto = require('crypto');
+program
+  .version('0.0.1')
+  .arguments('<uid> <api_key> [ttl]')
+  .action(function(uid, api_key, ttl) {
+    var word = '';
+
+    var ts = Date.now();
+    word += 'ts=' + ts;
+
+    if (ttl) {
+      word += '&ttl=' + ttl;
+    }
+
+    word += '&uid=' + uid;
+
+    console.log(
+      'https://api.seniverse.com/v3/weather/now.json?location=ip&language=zh-Hans&unit=c&'
+      + word
+      + '&sig=' + encodeURIComponent(
+        crypto.createHmac("sha1", api_key)
+          .update(word)
+          .digest('base64')));
+  });
+
+  program.parse(process.argv);
+

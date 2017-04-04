@@ -1,0 +1,10 @@
+version: '2'
+services:
+  kitty:
+    build: .
+    image: kitty:local
+    ports:
+      - "3030:3030"
+    volumes:
+      - .:/www/kitty
+

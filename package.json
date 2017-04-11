@@ -9,7 +9,7 @@
     "start": "node bin/www",
     "start:prod": "cross-env NODE_ENV=production npm start",
     "build": "webpack",
-    "build:prod": "cross-env NODE_ENV=production webpack",
+    "build:prod": "cross-env NODE_ENV=production webpack -p",
     "weather_api": "node scripts/weather_api"
   },
   "devDependencies": {

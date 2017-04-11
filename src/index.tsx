@@ -18,28 +18,22 @@ import './style.css';
 const root_reducer = combineReducers({});
 const root_store = createStore(root_reducer);
 
-Axios.get(
-  'https://api.seniverse.com/v3/weather/now.json?location=ip&language=zh-Hans&unit=c&ts=1491211104972&ttl=1&uid=U370E25570&sig=Oh%2F4Min6Sa%2BwafAvuOE8SR%2BzMbY%3D&callback=showWeather', {
-    withCredentials: true,
-  }).then((res) => {
-    const weather_result = (window as any)['showWeather']();
-    render(
+const weather_result: WeatherResult = JSON.parse('{"results":[{"location":{"id":"WS10730EM8EV","name":"Shenzhen","country":"CN","path":"Shenzhen,Shenzhen,Guangdong,China","timezone":"Asia/Shanghai","timezone_offset":"+08:00"},"now":{"text":"Cloudy","code":"4","temperature":"23"},"last_update":"2017-04-07T22:10:00+08:00"}]}').results[0];
+render(
   <Provider store={root_store}>
     {/*<IntlProvider*/}
-      {/*// locale={locale}*/}
-      {/*// messages={msg}*/}
+    {/*// locale={locale}*/}
+    {/*// messages={msg}*/}
     {/*// >*/}
     <div>
-      <Welcome city={weather_result.location.name} weather_code={parseInt(weather_result.now.code)} temperature={weather_result.now.temperature}/>
+      <Welcome city={weather_result.location.name} weather_code={parseInt(weather_result.now.code)} temperature={weather_result.now.temperature} />
       <Display />
     </div>
-        {/*// </IntlProvider>*/}
+    {/*// </IntlProvider>*/}
   </Provider>
   ,
   document.getElementById('root'));
-  });
 
-// const weather_result:WeatherResult = JSON.parse('{"results":[{"location":{"id":"W7W3YQKE4QDH","name":"Haikou","country":"CN","path":"Haikou,Haikou,Hainan,China","timezone":"Asia/Shanghai","timezone_offset":"+08:00"},"now":{"text":"Cloudy","code":"4","temperature":"27"},"last_update":"2017-04-04T15:50:00+08:00"}]}').results[0];
 
 
   // })

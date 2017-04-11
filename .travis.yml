@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+- node
+env:
+  - secure: H5cDO88nnFUbPpt0Vs3MNF8qNzjCQEcpgz657x0Eq04uhGe46G2aMidixNtfEfSY0VvsbBYTw6zWMjabV7YmSoYXkvluZVYnqLMe/0Yb79zcSiWys80IAZqkVAAo6/ijrw4nRmLHhgvyvzxJWG0Hdze/C/pgvWVxTYfOCLLGkOnahZyRe/DCWebp2uIiXsFHxhcFPVJBOSRFsekt+iwSdiMGd7MkgYtRxEj90/0Z3X+i4uNNuoTpDFRs4SdSP2A4/npnoB9kMv0LpKEi0sLHxEkCjINIfU2/urx6lFiGPSDWp/fwxilAdEm5VXSzWFcutL1iWfdkA5p6iSLgJ22LNwxjp/tgMkbQFRBP/mCgh5FcoWv6AS7PjBEsdPcml6woBUJLlOIae2JvSUroGMu9UCnT3sRApvf+nEqEX1vDkUAYFaaKwQMe2S8ZawwACwG+3A0J7uSDim6/DLbf9vsTya/VkAA8GFCAZx7xE1z6VHmchs7Ka/jGNzzo/dXIsJXYBFJysfdn+lEmHtTW13pbrF7n5mTSJiIoEHsysc+fqCum/Vqn9QXFax6iY8g36VQS+yRe4csGkKkV8fq8QnTV9TEwDLoi6Xkc41fnZjMEMAFcG6FA+XZogGhSrok1AgAR9fcEH56YCfMMU3q46WFi+tf+f61SzCrBNw7XXUwkmFQ=
+install:
+- npm install
+script:
+  - git config --global user.email "$GIT_EMAIL"
+  - git config --global user.name "$GIT_NAME"
+  - git config --global push.default simple
+  - git clone --depth 1 https://$GH_TOKEN@github.com/GreenDou/heart_chick.git dist
+  - cd dist
+  - git checkout gh-pages
+  - cd ..
+  - npm run build:prod
+after_success:
+  - cd dist
+  - git add -A
+  - git commit -m "Updated from Travis"
+  - git push --quiet

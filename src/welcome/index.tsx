@@ -11,7 +11,8 @@ const hill_3 = require<string>('./asset/hill3.png');
 const hill_4 = require<string>('./asset/hill4.png');
 const hill_5 = require<string>('./asset/hill5.png');
 const cloud = require<string>('./asset/cloud.png');
-const resources = [ weather_chick, hill_1, hill_2, hill_3, hill_4, hill_5, cloud ];
+const arrow_down = require<string>('./asset/roll down.png');
+const resources = [ weather_chick, hill_1, hill_2, hill_3, hill_4, hill_5, cloud, arrow_down ];
 
 interface WelcomeProps {
   city:string;
@@ -66,6 +67,7 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
       this.init_hills(res);
       this.init_cloud(res);
       this.init_weather();
+      this.init_arrow();
     });
   }
 
@@ -155,5 +157,22 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
     text_temperature.position.set(0, text_city.y + text_city.height / 2 + 16 + text_temperature.height / 2);
     this.pixi_app.stage.addChild(text_temperature);
   }
-}
 
+  private init_arrow() {
+    const texture = PIXI.loader.resources[arrow_down].texture;
+    const y = this.pixi_app.stage.height / 2 - texture.height / 2 - 20;
+    const sprite_arrow = this.add_sprite(
+      'arrow', texture, 0, y);
+    let direction = 1;
+    this.pixi_app.ticker.add((delta_time) => {
+      const speed = delta_time / 5;
+      if (Math.abs(sprite_arrow.y - y) > 5) {
+        sprite_arrow.y = y + 5 * direction;
+        direction *= -1;
+      } else {
+        sprite_arrow.y += speed * direction;
+      }
+    })
+    this.pixi_app.stage.addChild(sprite_arrow);
+  }
+}

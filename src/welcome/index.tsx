@@ -1,6 +1,6 @@
+import * as PIXI from 'pixi.js';
 import * as React from 'react';
 import * as CSSModules from 'react-css-modules';
-import * as PIXI from 'pixi.js';
 
 const style = require('./style.css');
 
@@ -12,18 +12,19 @@ const hill_4 = require<string>('./asset/hill4.png');
 const hill_5 = require<string>('./asset/hill5.png');
 const cloud = require<string>('./asset/cloud.png');
 const arrow_down = require<string>('./asset/roll down.png');
-const resources = [ weather_chick, hill_1, hill_2, hill_3, hill_4, hill_5, cloud, arrow_down ];
+const shooting_star = require<string>('./asset/shooting star.png');
+const resources = [weather_chick, hill_1, hill_2, hill_3, hill_4, hill_5, cloud, arrow_down, shooting_star];
 
 interface WelcomeProps {
-  city:string;
-  temperature:string;
-  weather_code:number;
+  city: string;
+  temperature: string;
+  weather_code: number;
 }
 
 @CSSModules(style)
 export class Welcome extends React.Component<WelcomeProps, {}> {
-  private pixi_element:HTMLElement;
-  private pixi_app:PIXI.Application;
+  private pixi_element: HTMLElement;
+  private pixi_app: PIXI.Application;
   componentDidMount() {
     const width = window.innerWidth;
     const height = window.innerHeight;
@@ -40,7 +41,7 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
 
     const texture = PIXI.Texture.fromCanvas(canvas);
     const sprite = new PIXI.Sprite(texture);
-    sprite.position.set(-width / 2, -height /2);
+    sprite.position.set(-width / 2, -height / 2);
 
     this.pixi_app = new PIXI.Application(width, height);
     this.pixi_app.stage.pivot.set(-width / 2, -height / 2);
@@ -57,7 +58,7 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
 
   private init_sprites() {
 
-    PIXI.loader.add(resources).load((loader:PIXI.loaders.Loader, res:any) => {
+    PIXI.loader.add(resources).load((loader: PIXI.loaders.Loader, res: any) => {
       const weather_chick_sprite = this.add_sprite(
         'weather_chick',
         res[(weather_chick as string)].texture,
@@ -68,10 +69,11 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
       this.init_cloud(res);
       this.init_weather();
       this.init_arrow();
+      this.init_stars();
     });
   }
 
-  private add_sprite(name:string, texture:PIXI.Texture, x:number, y:number, alpha?:number) {
+  private add_sprite(name: string, texture: PIXI.Texture, x: number, y: number, alpha?: number) {
     const sprite = new PIXI.Sprite(texture);
     sprite.name = name;
     sprite.pivot.set(sprite.width / 2, sprite.height / 2);
@@ -83,35 +85,35 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
     return sprite;
   };
 
-  private init_hills(res:PIXI.loaders.IResourceDictionary) {
+  private init_hills(res: PIXI.loaders.IResourceDictionary) {
     this.add_sprite(
-        'hill_1',
-        res[hill_1].texture,
-        -this.pixi_app.stage.width / 2 + res[hill_1].texture.width / 2,
-        this.pixi_app.stage.height / 2 - res[hill_1].texture.height / 2);
-      this.add_sprite(
-        'hill_2',
-        res[hill_2].texture,
-        -this.pixi_app.stage.width * 0.25,
-        this.pixi_app.stage.height / 2 - res[hill_2].texture.height / 2);
-      this.add_sprite(
-        'hill_3',
-        res[(hill_3 as string)].texture,
-        this.pixi_app.stage.width * 0.2,
-        this.pixi_app.stage.height / 2 - res[(hill_3 as string)].texture.height / 2);
-      this.add_sprite(
-        'hill_4',
-        res[hill_4].texture,
-        this.pixi_app.stage.width * 0.3,
-        this.pixi_app.stage.height / 2 - res[hill_4].texture.height / 2);
-      this.add_sprite(
-        'hill_5',
-        res[hill_5].texture,
-        this.pixi_app.stage.width * 0.5 - res[hill_5].texture.width / 2,
-        this.pixi_app.stage.height / 2 - res[hill_5].texture.height / 2);
+      'hill_1',
+      res[hill_1].texture,
+      -this.pixi_app.stage.width / 2 + res[hill_1].texture.width / 2,
+      this.pixi_app.stage.height / 2 - res[hill_1].texture.height / 2);
+    this.add_sprite(
+      'hill_2',
+      res[hill_2].texture,
+      -this.pixi_app.stage.width * 0.25,
+      this.pixi_app.stage.height / 2 - res[hill_2].texture.height / 2);
+    this.add_sprite(
+      'hill_3',
+      res[(hill_3 as string)].texture,
+      this.pixi_app.stage.width * 0.2,
+      this.pixi_app.stage.height / 2 - res[(hill_3 as string)].texture.height / 2);
+    this.add_sprite(
+      'hill_4',
+      res[hill_4].texture,
+      this.pixi_app.stage.width * 0.3,
+      this.pixi_app.stage.height / 2 - res[hill_4].texture.height / 2);
+    this.add_sprite(
+      'hill_5',
+      res[hill_5].texture,
+      this.pixi_app.stage.width * 0.5 - res[hill_5].texture.width / 2,
+      this.pixi_app.stage.height / 2 - res[hill_5].texture.height / 2);
   }
 
-  private init_cloud(res:PIXI.loaders.IResourceDictionary) {
+  private init_cloud(res: PIXI.loaders.IResourceDictionary) {
     this.add_sprite(
       'cloud_1',
       res[cloud].texture,
@@ -174,5 +176,49 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
       }
     })
     this.pixi_app.stage.addChild(sprite_arrow);
+  }
+
+  private init_stars() {
+    const texture = PIXI.loader.resources[shooting_star].texture;
+    const shooting_star_a = this.add_sprite('shooting_star_a', texture, 0, 0);
+    const shooting_star_b = this.add_sprite('shooting_star_b', texture, 0, 0);
+    shooting_star_a.rotation = -Math.PI / 4;
+    shooting_star_b.rotation = -Math.PI / 4;
+
+    this.reset_shooting_star(shooting_star_a, true);
+    this.reset_shooting_star(shooting_star_a, true);
+
+    this.pixi_app.ticker.add((delta_time) => {
+      this.update_shooting_star(shooting_star_a, delta_time);
+      this.update_shooting_star(shooting_star_b, delta_time);
+    });
+  }
+
+  private update_shooting_star(star:PIXI.Sprite, delta_time:number) {
+    const width = this.pixi_app.screen.width;
+    const height = this.pixi_app.screen.height;
+    if (star.x > width || star.y > height) {
+      this.reset_shooting_star(star);
+    } else {
+      star.x += delta_time * 20;
+      star.y += delta_time * 20;
+    }
+  }
+
+  private reset_shooting_star(star: PIXI.Sprite, init = false) {
+    if (Math.random() > 0.005 && !init) {
+      return;
+    }
+
+    const width = this.pixi_app.screen.width;
+    const height = this.pixi_app.screen.height;
+    const random_position = Math.random() * (width + height);
+    if (random_position < height) {
+      star.x = - width / 2 - star.width;
+      star.y = height / 2 - random_position;
+    } else {
+      star.x = width / 2 - (random_position - height);
+      star.y = - height / 2 - star.height;
+    }
   }
 }

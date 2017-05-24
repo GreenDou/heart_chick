@@ -12,8 +12,9 @@ const hill_4 = require<string>('./asset/hill4.png');
 const hill_5 = require<string>('./asset/hill5.png');
 const cloud = require<string>('./asset/cloud.png');
 const arrow_down = require<string>('./asset/roll down.png');
+const star = require<string>('./asset/star.png');
 const shooting_star = require<string>('./asset/shooting star.png');
-const resources = [weather_chick, hill_1, hill_2, hill_3, hill_4, hill_5, cloud, arrow_down, shooting_star];
+const resources = [weather_chick, hill_1, hill_2, hill_3, hill_4, hill_5, cloud, arrow_down, shooting_star, star];
 
 interface WelcomeProps {
   city: string;
@@ -69,6 +70,7 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
       this.init_cloud(res);
       this.init_weather();
       this.init_arrow();
+      this.init_shooting_stars();
       this.init_stars();
     });
   }
@@ -178,7 +180,7 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
     this.pixi_app.stage.addChild(sprite_arrow);
   }
 
-  private init_stars() {
+  private init_shooting_stars() {
     const texture = PIXI.loader.resources[shooting_star].texture;
     const shooting_star_a = this.add_sprite('shooting_star_a', texture, 0, 0);
     const shooting_star_b = this.add_sprite('shooting_star_b', texture, 0, 0);
@@ -219,6 +221,47 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
     } else {
       star.x = width / 2 - (random_position - height);
       star.y = - height / 2 - star.height;
+    }
+  }
+
+  private init_stars() {
+    this.add_star('star_a', -600, -270);
+    this.add_star('star_b', -415, -122);
+    this.add_star('star_c', 110, -375);
+    this.add_star('star_d', 325, 43);
+    this.add_star('star_e', -135, 265);
+    this.add_star('star_f', 573, 330);
+  }
+
+  private add_star(name:string, x:number, y:number) {
+    const texture = PIXI.loader.resources[star].texture;
+    const sprite_star:any = this.add_sprite(name, texture, x, y);
+
+    sprite_star.delay = 1;
+    sprite_star.alpha_direction = 1;
+
+    this.pixi_app.ticker.add((delta) => {
+      this.update_star(delta, sprite_star);
+    })
+    this.pixi_app.stage.addChild(sprite_star);
+  }
+
+  private update_star(delta_time:number, star:any) {
+    if (star.delay > 0) {
+      star.delay -= delta_time;
+      return;
+    }
+
+    star.alpha += delta_time * star.alpha_direction / 100;
+
+    if (star.alpha > 1) {
+      star.alpha = 1;
+      star.delay = Math.random() * 200;
+      star.alpha_direction = -1;
+    } else if (star.alpha < 0) {
+      star.alpha = 0;
+      star.delay = Math.random() * 200;
+      star.alpha_direction = 1;
     }
   }
 }

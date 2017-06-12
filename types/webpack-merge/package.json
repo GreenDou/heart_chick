@@ -1,0 +1,19 @@
+{
+    "name": "@types/webpack-merge",
+    "version": "0.0.4",
+    "description": "TypeScript definitions for webpack-merge",
+    "license": "MIT",
+    "author": "Simon Hartcher <https://github.com/deevus>",
+    "main": "",
+    "repository": {
+        "type": "git",
+        "url": "https://www.github.com/DefinitelyTyped/DefinitelyTyped.git"
+    },
+    "scripts": {},
+    "dependencies": {
+        "@types/webpack": "*"
+    },
+    "peerDependencies": {},
+    "typings": "index.d.ts",
+    "typesPublisherContentHash": "ceb0895a5c8a53594345a3084fc6432befb81d2951e24f410dbd79a9de4002ed"
+}

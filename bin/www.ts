@@ -1,44 +1,23 @@
-#!/usr/bin/env node
-"use strict";
+import * as fs from 'fs';
+import * as path from 'path';
+import * as http from 'http';
 
-let fs = require('fs');
-let http = require('http');
-let https = require('https');
-let path = require('path');
-
-let app = require('./app.js');
-
-let config = require(path.join(__dirname, '..', 'config'))().server; 
+import { app } from './app';
+import { config } from '../config'; 
 
 let creds = {};
-if (config.https.enabled) {
-  let cert = fs.readFileSync(path.join(
-    __dirname,
-    '..',
-    config.https.crt), 'utf8');
-  
-  let private_key = fs.readFileSync(path.join(
-    __dirname,
-    '..',
-    config.https.key), 'utf8');
-
-  creds = {
-    key: private_key,
-    cert: cert
-  };
-}
 
 // Functions below come from Google Cloud developer documentation.
 
 /**
  * Normalize a port into a number, string, or false.
  */
-function normalizePort(val) {
-  let port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
+function normalizePort(val:number|string) {
+  let port:number;
+  if (typeof val === 'string') {
+    port = parseInt(val, 10);
+  } else {
+    port = val;
   }
 
   if (port >= 0) {
@@ -52,7 +31,7 @@ function normalizePort(val) {
 /**
  * Event listener for HTTP server "error" event.
  */
-function onError(error) {
+function onError(error:any) {
   if (error.syscall !== "listen") {
     throw error;
   }
@@ -83,13 +62,8 @@ function onListening() {
   console.log("Listening on " + bind);
 }
 
-let port = normalizePort(process.env.PORT || config.port);
-let server;
-if (config.https.enabled) {
-  server = https.createServer(creds, app.callback());
-} else {
-  server = http.createServer(app.callback());
-}
+let port = normalizePort(process.env.PORT || config().server.port);
+let server = http.createServer(app.callback());
 server.listen(port);
 server.on("error", onError);
 server.on("listening", onListening);

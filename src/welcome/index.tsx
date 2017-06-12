@@ -1,19 +1,23 @@
+/// <reference path="../../types/global.d.ts" />
+
 import * as PIXI from 'pixi.js';
 import * as React from 'react';
 import * as CSSModules from 'react-css-modules';
 
 const style = require('./style.css');
 
-const weather_chick = require('../display/asset/weather.png');
-const hill_1 = require<string>('./asset/hill1.png');
-const hill_2 = require<string>('./asset/hill2.png');
-const hill_3 = require<string>('./asset/hill3.png');
-const hill_4 = require<string>('./asset/hill4.png');
-const hill_5 = require<string>('./asset/hill5.png');
-const cloud = require<string>('./asset/cloud.png');
-const arrow_down = require<string>('./asset/roll down.png');
-const star = require<string>('./asset/star.png');
-const shooting_star = require<string>('./asset/shooting star.png');
+import weather_chick from '../display/asset/weather.png';
+import hill from './asset/hill1.png';
+import  hill_1 from './asset/hill1.png';
+import  hill_2 from './asset/hill2.png';
+import  hill_3 from './asset/hill3.png';
+import  hill_4 from './asset/hill4.png';
+import  hill_5 from './asset/hill5.png';
+import  cloud from './asset/cloud.png';
+import  arrow_down from './asset/roll down.png';
+import  star from './asset/star.png';
+import  shooting_star from './asset/shooting star.png';
+
 const resources = [weather_chick, hill_1, hill_2, hill_3, hill_4, hill_5, cloud, arrow_down, shooting_star, star];
 
 interface WelcomeProps {
@@ -34,6 +38,9 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      throw new ReferenceError('CTX not found!');
+    }
     const gradient = ctx.createLinearGradient(0, 0, 0, height);
     gradient.addColorStop(0, '#336699');
     gradient.addColorStop(1, '#33ccff');

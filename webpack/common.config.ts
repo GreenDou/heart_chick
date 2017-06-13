@@ -2,6 +2,7 @@ import * as path from 'path';
 import * as webpack from 'webpack';
 import { CheckerPlugin } from 'awesome-typescript-loader';
 import * as  HtmlWebpackPlugin from 'html-webpack-plugin';
+import * as LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
 
 const PATH_ROOT = path.resolve(__dirname, '..');
 const PATH_DIST = path.resolve(PATH_ROOT, 'dist');
@@ -34,7 +35,8 @@ export const cfg_common:webpack.Configuration = {
         use: [{
           loader: 'url-loader',
           options: {
-            name: '[path][name]_[hash].[ext]'
+            name: 'asset/[name]_[hash:3].[ext]',
+            limit: 8192,
           }
         }],
       },
@@ -64,6 +66,14 @@ export const cfg_common:webpack.Configuration = {
     new CheckerPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(PATH_ROOT, 'src/index.html'),
+    }),
+    new webpack.DefinePlugin({
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+    }),
+    new LodashModuleReplacementPlugin({
+      collections: true,
+      paths: true,
+      shorthands: true,
     }),
   ],
 };

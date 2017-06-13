@@ -4,6 +4,7 @@ import * as webpack from 'webpack';
 import * as Koa from 'koa';
 import * as Router from 'koa-router';
 import * as serve from 'koa-static';
+import * as compress from 'koa-compress';
 
 import { get_webpack_config } from '../webpack.config';
 
@@ -22,6 +23,8 @@ if (process.env.NODE_ENV !== 'production') {
       publicPath: wb_cfg.output ? wb_cfg.output.publicPath : '/',
     }));
   app.use(require('koa-webpack-hot-middleware')(compiler));
+} else {
+  app.use(compress());
 }
 
 app.use(router.routes());

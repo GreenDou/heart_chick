@@ -17,4 +17,3 @@ export class Display extends React.Component<{}, {}> {
       </div>);
   }
 }
-

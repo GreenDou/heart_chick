@@ -94,7 +94,7 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
     return sprite;
   };
 
-  private init_hills(res: PIXI.loaders.IResourceDictionary) {
+  private init_hills(res: PIXI.loaders.ResourceDictionary) {
     this.add_sprite(
       'hill_1',
       res[hill_1].texture,
@@ -122,7 +122,7 @@ export class Welcome extends React.Component<WelcomeProps, {}> {
       this.pixi_app.stage.height / 2 - res[hill_5].texture.height / 2);
   }
 
-  private init_cloud(res: PIXI.loaders.IResourceDictionary) {
+  private init_cloud(res: PIXI.loaders.ResourceDictionary) {
     this.add_sprite(
       'cloud_1',
       res[cloud].texture,

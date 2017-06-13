@@ -1,4 +1,4 @@
-import * as  _ from 'lodash';
+import { has, defaultsDeep } from 'lodash';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -43,7 +43,7 @@ function generate_cfg() {
   }
 
   let env_config:Partial<ConfigJSON>|undefined;
-  if (_.has(process.env, CFG_ENV_VAR)) {
+  if (has(process.env, CFG_ENV_VAR)) {
     let env_cfg_path = process.env[CFG_ENV_VAR];
     if (file_exists(env_cfg_path)) {
       env_config = require(env_cfg_path);
@@ -53,7 +53,7 @@ function generate_cfg() {
   }
 
   let default_config = require(default_config_path);
-  let mixed_config = _.defaultsDeep<ConfigJSON|{}, ConfigJSON>(
+  let mixed_config = defaultsDeep<ConfigJSON|{}, ConfigJSON>(
     {}, // apply modifications to this new dict
     env_config,
     local_config,
@@ -63,8 +63,8 @@ function generate_cfg() {
 }
 
 function separate_client_server(mixed_config:ConfigJSON) {
-  let client_config = _.defaultsDeep({}, mixed_config.client, mixed_config.both);
-  let server_config = _.defaultsDeep<ServerConfig|{}, ServerConfig>({}, mixed_config.server, mixed_config.both);
+  let client_config = defaultsDeep({}, mixed_config.client, mixed_config.both);
+  let server_config = defaultsDeep<ServerConfig|{}, ServerConfig>({}, mixed_config.server, mixed_config.both);
 
   return {
     client: client_config,

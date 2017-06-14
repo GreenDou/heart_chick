@@ -5,6 +5,10 @@ import * as React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import Axios from 'axios';
+import {
+  BrowserRouter as Router,
+  Route,
+} from 'react-router-dom';
 
 import { Display } from './display';
 import './style.css';
@@ -25,10 +29,22 @@ render(
     {/*// locale={locale}*/}
     {/*// messages={msg}*/}
     {/*// >*/}
-    <div>
-      <Welcome city={weather_result.location.name} weather_code={parseInt(weather_result.now.code)} temperature={weather_result.now.temperature} />
-      <Display />
-    </div>
+    <Router>
+      <div>
+        <Route exact path='/' render={() => {
+          return (
+            <Welcome city={weather_result.location.name} weather_code={parseInt(weather_result.now.code)} temperature={weather_result.now.temperature} />
+          );
+        }}>
+        </Route>
+        <Route path='/display' render={() => {
+          return (
+            <Display />
+          );
+        }}>
+        </Route>
+      </div>
+    </Router>
     {/*// </IntlProvider>*/}
   </Provider>
   ,

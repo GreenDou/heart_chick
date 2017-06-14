@@ -17,3 +17,6 @@ dist
 
 # Local Config
 config/local.json
+
+# stats file
+stats.json

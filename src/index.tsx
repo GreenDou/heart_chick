@@ -1,5 +1,3 @@
-import { WeatherResult } from './def';
-import { Welcome } from './welcome';
 import { combineReducers, createStore } from 'redux';
 import * as React from 'react';
 import { render } from 'react-dom';
@@ -10,6 +8,9 @@ import {
   Route,
 } from 'react-router-dom';
 
+import { WeatherResult } from './def';
+import { PageWrapper } from './page_wrapper';
+import { Welcome } from './welcome';
 import { Display } from './display';
 import './style.css';
 // TODO: Check @types/react-intl if they fix the problem of 2.1.1
@@ -33,7 +34,11 @@ render(
       <div>
         <Route exact path='/' render={() => {
           return (
-            <Welcome city={weather_result.location.name} weather_code={parseInt(weather_result.now.code)} temperature={weather_result.now.temperature} />
+            <PageWrapper>
+              <Welcome city={weather_result.location.name}
+                  weather_code={parseInt(weather_result.now.code)}
+                  temperature={weather_result.now.temperature} />
+            </PageWrapper>
           );
         }}>
         </Route>

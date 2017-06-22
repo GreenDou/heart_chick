@@ -32,17 +32,15 @@ render(
     {/*// >*/}
     <Router>
       <div>
-        <Route exact path='/' render={() => {
+        <Route exact path='/heart_chick' render={() => {
           return (
-            <PageWrapper>
-              <Welcome city={weather_result.location.name}
-                  weather_code={parseInt(weather_result.now.code)}
-                  temperature={weather_result.now.temperature} />
-            </PageWrapper>
+            <Welcome city={weather_result.location.name}
+              weather_code={parseInt(weather_result.now.code)}
+              temperature={weather_result.now.temperature} />
           );
         }}>
         </Route>
-        <Route path='/display' render={() => {
+        <Route path='/heart_chick/display' render={() => {
           return (
             <Display />
           );

@@ -4,7 +4,8 @@ import * as CompressionPlugin from 'compression-webpack-plugin';
 export const cfg_prod:webpack.Configuration = {
   devtool: 'hidden-source-map',
   plugins: [
-     new webpack.LoaderOptionsPlugin({
+    new (webpack.optimize as any).ModuleConcatenationPlugin(),
+    new webpack.LoaderOptionsPlugin({
       minimize: true,
       debug: false,
     }),

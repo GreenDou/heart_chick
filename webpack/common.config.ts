@@ -3,6 +3,7 @@ import * as webpack from 'webpack';
 import { CheckerPlugin } from 'awesome-typescript-loader';
 import * as  HtmlWebpackPlugin from 'html-webpack-plugin';
 import * as LodashModuleReplacementPlugin from 'lodash-webpack-plugin';
+import * as CleanWebpackPlugin from 'clean-webpack-plugin';
 
 const PATH_ROOT = path.resolve(__dirname, '..');
 const PATH_DIST = path.resolve(PATH_ROOT, 'dist');
@@ -13,7 +14,6 @@ export const cfg_common:webpack.Configuration = {
   },
   output: {
     path: PATH_DIST,
-    publicPath: '/',
     filename: 'app.min.js',
   },
   module: {
@@ -64,6 +64,9 @@ export const cfg_common:webpack.Configuration = {
   context: PATH_ROOT,
   plugins: [
     new CheckerPlugin(),
+    new CleanWebpackPlugin('dist/*', {
+      exclude: ['.git'],
+    }),
     new HtmlWebpackPlugin({
       template: path.join(PATH_ROOT, 'src/index.html'),
     }),
